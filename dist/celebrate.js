@@ -23,7 +23,9 @@ function democraticCallTracker() {
 function playCouchBurst(canvas, duration, isTV) {
   const context=canvas.getContext('2d');
   if (!context) return () => {};
-  const colors=['#edf5ff','#a5ccff','#6c9efa','#8ce4f7','#d6f59d','#f6cf79'];
+  const themed=window.themeList?.('burst')??[];
+  const colors=themed.length?themed:['#edf5ff','#a5ccff','#6c9efa','#8ce4f7','#d6f59d','#f6cf79'];
+  const rings=window.themeList?.('burst-ring')??[];
   const particles=Array.from({length:isTV?160:105},(_,i)=>({
     angle:Math.random()*Math.PI*2,
     speed:.23+Math.random()*.93,
@@ -68,7 +70,7 @@ function playCouchBurst(canvas, duration, isTV) {
         const [sx,sy]=project(x*Math.cos(yaw)-y*Math.sin(twist)*Math.sin(yaw),y*Math.cos(twist),x*Math.sin(yaw)+y*Math.sin(twist)*Math.cos(yaw));
         if(point===0) context.moveTo(sx,sy);else context.lineTo(sx,sy);
       }
-      context.strokeStyle=ring===1?'#d4f1a1':'#80b8fd';
+      context.strokeStyle=ring===1?(rings[0]||'#d4f1a1'):(rings[1]||'#80b8fd');
       context.globalAlpha=fade*Math.min(1,elapsed*4)*(.24-ring*.04);
       context.lineWidth=ring===0?1.4:.9;
       context.stroke();

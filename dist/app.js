@@ -45,7 +45,16 @@ const select = $('#state');
 for (const [code,name] of Object.entries(stateNames).sort((a,b) => a[1].localeCompare(b[1]))) select.append(new Option(name,code));
 const atlas = $('#atlas');
 const land = $('#land'), labels = $('#labels'), grid = $('#grid');
-const colors = {dem:['#527eaa','#27415b'],rep:['#a75f60','#563537'],other:['#a89058','#504534'],none:['#495b45','#263726']};
+const mapTone = (name,fallback) => window.themeColor?.(name) || fallback;
+const colors = {};
+function readMapColors() {
+  const fallback = {dem:['#527eaa','#27415b'],rep:['#a75f60','#563537'],other:['#a89058','#504534'],none:['#495b45','#263726']};
+  for (const [kind,[top,low]] of Object.entries(fallback)) colors[kind]=[mapTone("map-"+kind,top),mapTone("map-"+kind+"-low",low)];
+  colors.grid=mapTone('map-grid','#97b486');colors.edge=mapTone('map-edge','#8fa58b');colors.edgeActive=mapTone('map-edge-active','#e2ffaa');
+  colors.label=mapTone('map-label','#f1f2e5');colors.labelActive=mapTone('map-label-active','#e2ffaa');colors.halo=mapTone('map-label-halo','#101710');
+}
+readMapColors();
+document.addEventListener('themechange',()=>{readMapColors();drawMap();});
 let geometry = [];
 function area(ring) {
   return Math.abs(ring.reduce((total,[x,y],i) => {
@@ -100,11 +109,11 @@ function drawMap() {
   const byState=coverage(), gridItems=[];
   for (let x=-50;x<=1030;x+=60) {
     const a=project([x,12],-13), b=project([x,642],-13);
-    gridItems.push(svg('path',{d:'M'+a+'L'+b,stroke:'#97b486',opacity:'.19','stroke-width':'.65'}));
+    gridItems.push(svg('path',{d:'M'+a+'L'+b,stroke:colors.grid,opacity:'.19','stroke-width':'.65'}));
   }
   for (let y=12;y<=642;y+=45) {
     const a=project([-50,y],-13), b=project([1030,y],-13);
-    gridItems.push(svg('path',{d:'M'+a+'L'+b,stroke:'#97b486',opacity:'.19','stroke-width':'.65'}));
+    gridItems.push(svg('path',{d:'M'+a+'L'+b,stroke:colors.grid,opacity:'.19','stroke-width':'.65'}));
   }
   grid.replaceChildren(...gridItems);
   const sorted = geometry.map(g=>({...g,y:project(g.center)[1]})).sort((a,b)=>a.y-b.y);
@@ -118,13 +127,13 @@ function drawMap() {
     if (!overhead) {
       for(let z=0;z<height;z+=4) group.append(svg('path',{d:path(g.rings,z),fill:edge,stroke:edge,'stroke-width':2,'fill-rule':'evenodd'}));
     }
-    group.append(svg('path',{d:path(g.rings,height),fill:top,stroke:active?'#e2ffaa':'#8fa58b','stroke-width':active?2:.7,'fill-rule':'evenodd','vector-effect':'non-scaling-stroke'}));
+    group.append(svg('path',{d:path(g.rings,height),fill:top,stroke:active?colors.edgeActive:colors.edge,'stroke-width':active?2:.7,'fill-rule':'evenodd','vector-effect':'non-scaling-stroke'}));
     const description=svg('title',{});
     description.textContent=stateNames[g.code] + ' · ' + (byState.get(g.code)?.length ?? 0) + ' races with votes';
     group.append(description);
     const [x,y]=project(g.center,height);
     if (g.area>3500 || active) {
-      const label=svg('text',{x,y,fill:active?'#e2ffaa':'#f1f2e5','font-size':active?15:12,'font-family':'monospace','font-weight':active?700:500,'text-anchor':'middle','dominant-baseline':'middle','pointer-events':'none','paint-order':'stroke','stroke-width':2,stroke:'#101710'});
+      const label=svg('text',{x,y,fill:active?colors.labelActive:colors.label,'font-size':active?15:12,'font-family':(window.themeColor?.('mono')||'monospace'),'font-weight':active?700:500,'text-anchor':'middle','dominant-baseline':'middle','pointer-events':'none','paint-order':'stroke','stroke-width':2,stroke:colors.halo});
       label.textContent=g.code;
       selected.push(label);
     }
@@ -463,7 +472,7 @@ async function refresh(force=false) {
       queueRaceCalls(national);
       failures=0;
     } catch (error) {
-      console.warn('[Counting Couch] National feed unavailable, using snapshot:', error?.message ?? error);
+      console.warn('[Vote-Casting Couch] National feed unavailable, using snapshot:', error?.message ?? error);
       failures++;
       await Promise.all(Object.keys(offices).filter(kind=>!feeds.has(kind)).map(async kind=>{
         try {

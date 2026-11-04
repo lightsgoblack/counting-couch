@@ -309,9 +309,12 @@ const CountyMap = (() => {
     statusLine(); resize(); showCard(); animateRise();
     if (document.body.classList.contains('tv-mode') && matchMedia('(min-width: 760px)').matches) startTour();
   }
+  // Only offer the map for states whose county file has been built.
+  const available = fetch('counties/index.json').then(r => r.ok ? r.json() : {states: {}}).then(i => i.states ?? {}).catch(() => ({}));
   function button(state) {
     const b = el('button', 'Open the 3D county map ↗', 'county-open');
-    b.type = 'button';
+    b.type = 'button'; b.hidden = true;
+    available.then(states => { b.hidden = !states[state]; });
     b.addEventListener('click', () => open(state));
     return b;
   }

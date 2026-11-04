@@ -1,4 +1,4 @@
-COUNTING COUCH / RELEASE AUDIT
+VOTE-CASTING COUCH / RELEASE AUDIT
 November 4, 2026
 
 Checks covered 2026 navigation, live atlas and recap, the logo’s visual centering,

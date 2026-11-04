@@ -1,4 +1,4 @@
-# Counting Couch
+# Vote-Casting Couch
 
 The complete portable site source lives in `dist/`. Run `python3 -m http.server 8000 --directory dist` from this folder, then open `http://localhost:8000/`. Deploy the contents of `dist/` as the root of any static web host. Update the public Open Graph URLs if you move the domain.
 
