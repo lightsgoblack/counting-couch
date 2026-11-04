@@ -5,23 +5,24 @@
 <meta name="theme-color" content="#101510">
 <meta name="description" content="An interactive atlas of official state returns for the 2026 U.S. midterms.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Counting Couch">
-<meta property="og:title" content="Counting Couch · 2026 Midterms">
+<meta property="og:site_name" content="Vote-Casting Couch">
+<meta property="og:title" content="Vote-Casting Couch · 2026 Midterms">
 <meta property="og:description" content="Explore the 3D election map, follow the closest races, and watch coverage alongside the returns.">
 <meta property="og:url" content="https://election.colinrobinson.com/">
 <meta property="og:image" content="https://election.colinrobinson.com/share-card.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Counting Couch, with a green 3D map of the United States.">
+<meta property="og:image:alt" content="Vote-Casting Couch, with a green 3D map of the United States.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://election.colinrobinson.com/share-card.jpg">
-<link rel="icon" href="icon.svg"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css">
-<title>Counting Couch · U.S. Midterms 2026</title>
+<link rel="icon" href="icon.svg"><link rel="manifest" href="manifest.webmanifest"><script src="theme.js"></script><link rel="stylesheet" href="style.css">
+<title>Vote-Casting Couch · U.S. Midterms 2026</title>
+<link rel="stylesheet" href="themes.css">
 </head>
 <body>
 <a class="skip" href="#race-search">Skip to the race explorer</a>
-<header class="mast"><a class="brand" href="./"><img src="icon.svg" alt="" width="32" height="32"><span>COUNTING COUCH</span></a><div class="mast-actions"><a class="elections-nav" href="elections.html">Election Desk</a><a id="coverage-link" href="#coverage">Watch</a><div class="layout-select" role="group" aria-label="Screen layout"><button id="computer-mode" type="button" aria-pressed="false">Computer</button><button id="tv-mode" type="button" aria-pressed="true">TV</button></div><button id="fill-screen" type="button" hidden>Full screen</button><span id="signal" role="status"><i></i> CONNECTING</span><button id="share" type="button" aria-label="Share current view">Share <span aria-hidden="true">↗</span></button></div></header>
+<header class="mast"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span><span>VOTE-CASTING COUCH</span></a><div class="mast-actions"><a class="elections-nav" href="elections.html">Election Desk</a><a id="coverage-link" href="#coverage">Watch</a><div class="layout-select" role="group" aria-label="Screen layout"><button id="computer-mode" type="button" aria-pressed="false">Computer</button><button id="tv-mode" type="button" aria-pressed="true">TV</button></div><button id="fill-screen" type="button" hidden>Full screen</button><span id="signal" role="status"><i></i> CONNECTING</span><button id="share" type="button" aria-label="Share current view">Share <span aria-hidden="true">↗</span></button></div></header>
 <section class="recap" id="election-recap" aria-label="National election recap">
   <div class="recap-brief">
     <div class="recap-title"><span class="micro">NATIONAL RECAP</span><strong id="recap-called" aria-live="polite">Loading returns</strong></div>
@@ -41,7 +42,7 @@
 </section>
 <main>
 <section class="hero" aria-labelledby="title">
-<div class="intro"><div class="eyebrow"><span></span> GENERAL ELECTION <b> / </b> 03 NOV 2026</div><h1 id="title">Counting <em>Couch.</em></h1><p>Enter the atlas. Explore the contests, follow the count, and see where the margins are narrowing.</p></div>
+<div class="intro"><div class="eyebrow"><span></span> GENERAL ELECTION <b> / </b> 03 NOV 2026</div><h1 id="title">Vote-Casting <em>Couch.</em></h1><p>Enter the atlas. Explore the contests, follow the count, and see where the margins are narrowing.</p></div>
 <div class="chamber">
 <div class="mapbox">
 <div class="maphead"><div><span class="micro">01 / INTERACTIVE ATLAS</span><h2 id="map-title">U.S. Senate</h2></div><div class="tools"><button id="view" aria-pressed="false" title="Switch between perspective and overhead view">3D</button><button id="zoom-in" aria-label="Zoom in" title="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out" title="Zoom out">−</button><button id="reset" aria-label="Reset map view" title="Reset map view">⌖</button></div></div>
@@ -101,7 +102,7 @@
 <div class="external-coverage"><div class="micro">MORE RESULTS &amp; COVERAGE</div><div class="coverage-links"><a href="https://apnews.com/article/ef6199e25927a9ac9f4c18eae0e497cd" target="_blank" rel="noopener"><strong>Associated Press <span aria-hidden="true">↗</span></strong><small>Live updates and race calls</small></a><a href="https://votes.decisiondeskhq.com/" target="_blank" rel="noopener"><strong>Decision Desk HQ <span aria-hidden="true">↗</span></strong><small>Public results and race calls</small></a><a href="https://apps.npr.org/2026-election-results/" target="_blank" rel="noopener"><strong>NPR <span aria-hidden="true">↗</span></strong><small>National results and race maps</small></a><a href="https://electionresults.sos.ca.gov/" target="_blank" rel="noopener"><strong>California Secretary of State <span aria-hidden="true">↗</span></strong><small>Official California returns</small></a><a href="https://abcnews.com/live?stream=1" target="_blank" rel="noopener"><strong>ABC News Live <span aria-hidden="true">↗</span></strong><small>Broadcaster’s election-night player</small></a><a href="https://www.cbsnews.com/live-updates/election-day-2026-midterms/" target="_blank" rel="noopener"><strong>CBS News <span aria-hidden="true">↗</span></strong><small>Election-night updates and video</small></a><a href="https://www.foxnews.com/elections" target="_blank" rel="noopener"><strong>Fox News <span aria-hidden="true">↗</span></strong><small>Election center and race coverage</small></a><a href="https://www.livenowfox.com/live-blog/news/2026-midterm-election-results-live-blog" target="_blank" rel="noopener"><strong>LiveNOW from FOX <span aria-hidden="true">↗</span></strong><small>Election-night live blog</small></a></div></div>
 </section>
 </main>
-<footer><div class="micro">COUNTING COUCH / 2026</div><div>Unofficial state returns via <a href="https://civicapi.org/">civicAPI</a> and the <a href="https://sitmap.live/elections/us-2026">sitmap.live data feed</a>. Race calls are attributed to civicAPI. State offices certify the results.</div><a href="https://github.com/topojson/us-atlas">Map source</a></footer>
+<footer><div class="micro">VOTE-CASTING COUCH / 2026<span class="respectfully">Election night, from the couch. Respectfully.</span></div><div>Unofficial state returns via <a href="https://civicapi.org/">civicAPI</a> and the <a href="https://sitmap.live/elections/us-2026">sitmap.live data feed</a>. Race calls are attributed to civicAPI. State offices certify the results.</div><a href="https://github.com/topojson/us-atlas">Map source</a></footer>
 <div id="toast" role="status"></div>
 <div id="call-celebration" hidden aria-hidden="true"><div class="call-atmosphere"></div><canvas id="call-confetti"></canvas><div class="call-stage"><div class="call-banner"><div class="call-medallion"><svg viewBox="0 0 52 52" aria-hidden="true"><path d="M26 3 46 14v24L26 49 6 38V14zM6 14l20 12 20-12M26 26v23"/><path d="m18 30 6 5 11-11"/></svg></div><span>THE COUCH CALL</span><strong id="call-winner"></strong><small id="call-race"></small><div class="call-lights"></div></div></div></div>
 <p id="call-announcer" class="screen-reader-only" aria-live="polite" aria-atomic="true"></p>

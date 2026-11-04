@@ -1,0 +1,122 @@
+/* Vote-Casting Couch themes.
+   Every color in style.css / elections.css is derived from the tokens below,
+   so a theme only needs to set tokens plus a few signature flourishes.
+   --acid  = accent for text, focus and highlights
+   --tint  = hue mixed into panels, borders and button surfaces
+   --map-* = 3D map fills (top / -low side walls), edges, labels, grid
+   --burst = Couch Call confetti colors, --burst-ring = its shockwave rings */
+
+/* ── Theme picker (shared) ───────────────────────────── */
+.theme-picker{position:relative;display:flex}
+.mast>.theme-picker{margin-left:auto;margin-right:14px}
+.theme-toggle{display:flex;align-items:center;gap:8px;background:color-mix(in srgb,var(--tint) 7%,var(--bg));border:1px solid color-mix(in srgb,var(--tint) 24%,var(--bg));border-radius:3px;padding:6px 10px;font-size:12px;color:var(--ink);cursor:pointer}
+.theme-toggle:hover,.theme-toggle[aria-expanded=true]{border-color:var(--acid)}
+.theme-toggle b{font-weight:500}
+.theme-swatch{display:inline-flex;flex:none;align-items:center;gap:3px;padding:3px 5px;border-radius:999px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 22%,transparent)}
+.theme-swatch i{display:block;width:8px;height:8px;border-radius:50%}
+.theme-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:40;width:250px;padding:6px;background:var(--panel);border:1px solid color-mix(in srgb,var(--tint) 30%,var(--bg));border-radius:6px;box-shadow:0 18px 50px color-mix(in srgb,var(--shadow) 55%,transparent)}
+.theme-menu p{margin:4px 8px 6px;font:700 9px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.theme-option{display:flex;align-items:center;gap:11px;width:100%;padding:8px;border:1px solid transparent;border-radius:4px;background:none;color:var(--ink);text-align:left;cursor:pointer}
+.theme-option:hover,.theme-option:focus-visible{background:color-mix(in srgb,var(--tint) 10%,var(--panel));outline:none;border-color:color-mix(in srgb,var(--tint) 30%,var(--bg))}
+.theme-option[aria-checked=true]{border-color:var(--acid)}
+.theme-option .theme-swatch{padding:5px 7px;gap:4px}.theme-option .theme-swatch i{width:11px;height:11px}
+.theme-option strong{display:block;font-size:13px;font-weight:600}
+.theme-option small{display:block;font-size:11px;color:var(--muted);line-height:1.3}
+@media(max-width:740px){.theme-toggle b{display:none}.theme-toggle{padding:6px 8px}.mast>.theme-picker{margin-right:8px}}
+.tv-mode .theme-toggle{font-size:var(--tv-small,12px);min-height:38px}
+html{transition:background-color .35s ease}
+
+/* ── BROADSHEET · morning-edition newsprint ──────────── */
+:root[data-theme=broadsheet]{color-scheme:light;
+  --bg:#f3eee3;--panel:#fbf8f1;--ink:#16130f;--muted:#5d564b;--line:#cbc1ad;
+  --acid:#b8321a;--tint:#7a6a4f;--dem:#1d4f91;--rep:#b3261e;--other:#94660a;--none:#9d978a;--shadow:#3b2f1f;
+  --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --sans:'Franklin Gothic Book','Libre Franklin','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:'Courier Prime','Courier New',ui-monospace,monospace;
+  --map-dem:#3a6db3;--map-dem-low:#1d3f6e;--map-rep:#c8483f;--map-rep-low:#7c2620;--map-other:#c09335;--map-other-low:#6e5418;--map-none:#ddd5c4;--map-none-low:#a59d8b;
+  --map-grid:#7a6a4f;--map-edge:#4a4237;--map-edge-active:#16130f;--map-label:#16130f;--map-label-active:#b8321a;--map-label-halo:#f3eee3;
+  --burst:#16130f,#1d4f91,#3a6db3,#b8321a,#94660a,#5d564b;--burst-ring:#16130f,#1d4f91}
+[data-theme=broadsheet] body{background:
+  repeating-linear-gradient(0deg,transparent 0 3px,#00000005 3px 4px),
+  radial-gradient(ellipse at 50% -10%,#fffdf7 0,transparent 40rem),var(--bg)}
+[data-theme=broadsheet] .mast{border-bottom:3px double var(--ink)}
+[data-theme=broadsheet] .brand{letter-spacing:.22em}
+[data-theme=broadsheet] .intro h1,[data-theme=broadsheet] .desk-intro h1{font-weight:700;letter-spacing:-.02em}
+[data-theme=broadsheet] .intro h1 em{font-style:italic;font-weight:400}
+[data-theme=broadsheet] h2{font-weight:700}
+[data-theme=broadsheet] footer{border-top:3px double var(--ink)}
+
+/* ── STUDIO · network election-night set ─────────────── */
+:root[data-theme=studio]{color-scheme:dark;
+  --bg:#060a18;--panel:#0b1226;--ink:#f2f5ff;--muted:#9aa6c7;--line:#1f2a4a;
+  --acid:#ffd23f;--tint:#3a6cff;--dem:#4a93ff;--rep:#ff4458;--other:#ffb020;--none:#4a5578;--shadow:#000;
+  --serif:'Avenir Next Condensed','DIN Condensed','Roboto Condensed','Arial Narrow',sans-serif;
+  --sans:'Avenir Next','Segoe UI','Helvetica Neue',system-ui,sans-serif;
+  --mono:'SF Mono','JetBrains Mono',ui-monospace,Consolas,monospace;
+  --map-dem:#1f6bff;--map-dem-low:#0b2a6b;--map-rep:#ff2d45;--map-rep-low:#6b0f1a;--map-other:#ffb020;--map-other-low:#6b4708;--map-none:#1b2440;--map-none-low:#0b1124;
+  --map-grid:#3a6cff;--map-edge:#5f78c0;--map-edge-active:#ffd23f;--map-label:#f2f5ff;--map-label-active:#ffd23f;--map-label-halo:#060a18;
+  --burst:#ffffff,#ffd23f,#4a93ff,#1f6bff,#9fc3ff,#ffe9a3;--burst-ring:#ffd23f,#4a93ff}
+[data-theme=studio] body{background:
+  linear-gradient(transparent 0 calc(100% - 1px),#3a6cff12 0) 0 0/100% 48px,
+  radial-gradient(ellipse 70rem 34rem at 50% -8%,#1b3aa055 0,transparent 70%),
+  radial-gradient(ellipse 40rem 30rem at 100% 0,#ff2d4522 0,transparent 70%),var(--bg)}
+[data-theme=studio] .intro h1,[data-theme=studio] .desk-intro h1,[data-theme=studio] h2{font-weight:800;text-transform:uppercase;letter-spacing:-.01em}
+[data-theme=studio] .intro h1 em,[data-theme=studio] .desk-intro h1 em{font-style:normal;background:linear-gradient(90deg,#ffd23f,#ffe9a3);-webkit-background-clip:text;background-clip:text;color:transparent}
+[data-theme=studio] .mast{border-bottom:2px solid transparent;border-image:linear-gradient(90deg,#1f6bff,#ffd23f 50%,#ff2d45) 1}
+[data-theme=studio] #signal[data-live=true]{color:#ff4458}
+
+/* ── FEVER DREAM · psychedelic gig poster ───────────── */
+:root[data-theme=fever]{color-scheme:dark;
+  --bg:#12061f;--panel:#1b0b2e;--ink:#fff1e0;--muted:#cdb2df;--line:#3d1f5c;
+  --acid:#ff6fd8;--tint:#a35cff;--dem:#62c6ff;--rep:#ff8150;--other:#ffe14d;--none:#5a4373;--shadow:#05000a;
+  --serif:'Bookman Old Style',Bookman,'URW Bookman','Cooper Black',Georgia,serif;
+  --sans:'Futura','Century Gothic','Avenir Next',system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+  --map-dem:#3fb3ff;--map-dem-low:#1b3f8f;--map-rep:#ff6a3d;--map-rep-low:#7a2142;--map-other:#ffd84d;--map-other-low:#7a5a14;--map-none:#3b2456;--map-none-low:#1f1033;
+  --map-grid:#ff6fd8;--map-edge:#c08bff;--map-edge-active:#ffe14d;--map-label:#fff1e0;--map-label-active:#ffe14d;--map-label-halo:#12061f;
+  --burst:#ff6fd8,#ffe14d,#62c6ff,#a35cff,#ff8150,#7dffb2;--burst-ring:#ffe14d,#ff6fd8}
+[data-theme=fever] body{background:
+  radial-gradient(ellipse 60rem 40rem at 15% -5%,#ff6fd833 0,transparent 65%),
+  radial-gradient(ellipse 55rem 45rem at 95% 10%,#62c6ff26 0,transparent 65%),
+  radial-gradient(ellipse 70rem 50rem at 50% 110%,#ffe14d1c 0,transparent 70%),var(--bg);
+  background-attachment:fixed}
+[data-theme=fever] body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;
+  background:conic-gradient(from 0deg at 50% 50%,#ff6fd80d,#a35cff0d,#62c6ff0d,#7dffb20d,#ffe14d0d,#ff81500d,#ff6fd80d);
+  animation:fever-spin 60s linear infinite}
+@keyframes fever-spin{to{transform:rotate(1turn)}}
+[data-theme=fever] .intro h1 em,[data-theme=fever] .desk-intro h1 em{background:linear-gradient(100deg,#ff6fd8,#ff8150 45%,#ffe14d);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.08em}
+[data-theme=fever] .intro h1,[data-theme=fever] .desk-intro h1{letter-spacing:-.03em}
+[data-theme=fever] .mast{border-bottom:1px solid transparent;border-image:linear-gradient(90deg,#ff6fd8,#a35cff,#62c6ff,#ffe14d) 1}
+@media(prefers-reduced-motion:reduce){[data-theme=fever] body::before{animation:none}}
+
+/* ── PHOSPHOR · amber CRT terminal ───────────────────── */
+:root[data-theme=phosphor]{color-scheme:dark;
+  --bg:#0a0700;--panel:#110c02;--ink:#ffc45c;--muted:#b98a35;--line:#3a2a0a;
+  --acid:#ffe3a0;--tint:#ffb000;--dem:#6fd3ff;--rep:#ff6b57;--other:#f2e36b;--none:#6a5126;--shadow:#000;
+  --serif:'IBM Plex Mono','JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+  --sans:'IBM Plex Mono','JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+  --mono:'IBM Plex Mono','JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+  --map-dem:#2f9fcf;--map-dem-low:#0f3a4d;--map-rep:#d6503f;--map-rep-low:#4d1a12;--map-other:#d9b23a;--map-other-low:#4d3c0f;--map-none:#3a2b0d;--map-none-low:#1a1304;
+  --map-grid:#ffb000;--map-edge:#b98a35;--map-edge-active:#ffe3a0;--map-label:#ffc45c;--map-label-active:#ffe3a0;--map-label-halo:#0a0700;
+  --burst:#ffe3a0,#ffc45c,#ffb000,#6fd3ff,#ff6b57,#fff6dc;--burst-ring:#ffb000,#6fd3ff}
+[data-theme=phosphor] body{font-size:14px;text-shadow:0 0 6px #ffb00040;
+  background:radial-gradient(ellipse at 50% 40%,#1a1203 0,var(--bg) 75%)}
+[data-theme=phosphor] body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;
+  background:repeating-linear-gradient(0deg,#0000 0 2px,#00000038 2px 3px);mix-blend-mode:multiply}
+[data-theme=phosphor] *:not(i):not(svg *){border-radius:0!important}
+[data-theme=phosphor] .intro h1,[data-theme=phosphor] .desk-intro h1,[data-theme=phosphor] h2{text-transform:uppercase;letter-spacing:-.04em;font-weight:500}
+[data-theme=phosphor] .intro h1 em::after{content:"▌";margin-left:.06em;font-size:.62em;vertical-align:.12em;animation:phosphor-blink 1.1s steps(1) infinite}
+@keyframes phosphor-blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){[data-theme=phosphor] .intro h1 em::after{animation:none}}
+
+/* ── Brand mark (follows the theme accent) ───────────── */
+.brand-mark{display:block;flex:none;width:32px;height:32px;border-radius:8px;
+  background:color-mix(in srgb,var(--tint) 14%,var(--bg));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acid) 32%,transparent);position:relative}
+.brand-mark::after{content:"";position:absolute;inset:5px;background:var(--acid);-webkit-mask:url(mark.svg) center/contain no-repeat;mask:url(mark.svg) center/contain no-repeat}
+.brand:hover .brand-mark::after{animation:ballot-drop .6s cubic-bezier(.3,1.4,.5,1)}
+@keyframes ballot-drop{0%{transform:translateY(-3px)}100%{transform:none}}
+@media(prefers-reduced-motion:reduce){.brand:hover .brand-mark::after{animation:none}}
+.tv-mode .brand-mark{width:var(--tv-mark,32px);height:var(--tv-mark,32px)}
+
+/* ── The fine print ─────────────────────────────────── */
+.respectfully{display:block;margin-top:5px;font:italic 11px/1.3 var(--serif);letter-spacing:0;text-transform:none;color:var(--muted);opacity:.7}

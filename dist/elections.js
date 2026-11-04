@@ -120,7 +120,9 @@ if (deskView==='archive') {
     const grouped=groupByState(rows());
     const map=desk('#history-land'), labels=desk('#history-labels');
     map.replaceChildren();labels.replaceChildren();
-    const palette={D:['#527eaa','#2e4966'],R:['#a65e62','#58383a'],O:['#a68c56','#514535'],N:['#354439','#222e24']};
+    const tone=(name,fallback)=>window.themeColor?.(name)||fallback;
+    const palette={D:[tone('map-dem','#527eaa'),tone('map-dem-low','#2e4966')],R:[tone('map-rep','#a65e62'),tone('map-rep-low','#58383a')],O:[tone('map-other','#a68c56'),tone('map-other-low','#514535')],N:[tone('map-none','#354439'),tone('map-none-low','#222e24')]};
+    const edge=tone('map-edge','#829784'),edgeActive=tone('map-edge-active','#d1f897'),ink=tone('map-label','#e9eee1'),inkActive=tone('map-label-active','#e9ffbf');
     for (const state of geometry) {
       const results=grouped.get(state.code)??[];
       const votes=results.map(winner).filter(Boolean);
@@ -133,15 +135,16 @@ if (deskView==='archive') {
       tooltip.textContent=stateNames[state.code]+' · '+(results.length?results.length+' archived '+(results.length===1?'race':'races'):'No archived race');
       group.append(tooltip,svgNode('path',{d:outline(state.rings,0),fill:side,'fill-rule':'evenodd',stroke:side,'stroke-width':2}));
       if (height>5) group.append(svgNode('path',{d:outline(state.rings,height/2),fill:side,'fill-rule':'evenodd',stroke:side,'stroke-width':3}));
-      group.append(svgNode('path',{d:outline(state.rings,height),fill,'fill-rule':'evenodd',stroke:active?'#d1f897':'#829784','stroke-width':active?2.4:.8}));
+      group.append(svgNode('path',{d:outline(state.rings,height),fill,'fill-rule':'evenodd',stroke:active?edgeActive:edge,'stroke-width':active?2.4:.8}));
       map.append(group);
       if (state.size>4200 || active) {
         const [x,y]=project(...state.center,height);
-        const label=svgNode('text',{x,y,fill:active?'#e9ffbf':'#e9eee1','font-size':active?18:14,'text-anchor':'middle','dominant-baseline':'middle'});
+        const label=svgNode('text',{x,y,fill:active?inkActive:ink,'font-size':active?18:14,'text-anchor':'middle','dominant-baseline':'middle'});
         label.textContent=state.code;labels.append(label);
       }
     }
   }
+  document.addEventListener('themechange',()=>{if(geometry.length)paintMap();});
   desk('#history-map').addEventListener('click',event=>{
     const button=event.target.closest('[data-state]');
     if(button) selectState(button.dataset.state);

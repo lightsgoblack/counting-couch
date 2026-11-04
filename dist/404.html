@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101510">
+<meta name="robots" content="noindex">
+<title>The Couch Remembers · Vote-Casting Couch</title>
+<link rel="icon" href="/icon.svg">
+<script src="/theme.js"></script><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/themes.css">
+<style>
+.lost{min-height:calc(100vh - 160px);display:grid;align-content:center;gap:18px;padding:48px 0;max-width:760px}
+.lost .eyebrow{font:700 10px/1.2 var(--mono);letter-spacing:.18em;color:var(--acid);text-transform:uppercase}
+.lost h1{font:400 clamp(3rem,10vw,6.4rem)/.98 var(--serif);margin:0;letter-spacing:-.03em}
+.lost h1 em{color:var(--acid)}
+.lost p{margin:0;max-width:52ch;color:var(--muted);font-size:17px}
+.lost nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.lost nav a{padding:10px 16px;border:1px solid color-mix(in srgb,var(--tint) 35%,var(--bg));border-radius:4px;color:var(--ink);text-decoration:none;background:color-mix(in srgb,var(--tint) 7%,var(--bg))}
+.lost nav a:hover{border-color:var(--acid)}
+.cushion{width:min(320px,70vw);height:auto;color:var(--acid);opacity:.9;margin-bottom:6px}
+.cushion .drop{animation:slip 3.2s cubic-bezier(.5,0,.6,1) infinite}
+@keyframes slip{0%,20%{transform:translateY(-6px);opacity:1}60%{transform:translateY(16px);opacity:0}100%{transform:translateY(16px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.cushion .drop{animation:none}}
+</style>
+</head>
+<body>
+<header class="mast"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span><span>VOTE-CASTING COUCH</span></a><div class="mast-actions"></div></header>
+<main class="lost">
+  <svg class="cushion" viewBox="0 0 160 70" aria-hidden="true" fill="currentColor">
+    <g class="drop"><rect x="70" y="0" width="20" height="24" rx="2.5"/></g>
+    <path fill-rule="evenodd" d="M24 26h112a10 10 0 0 1 10 10v12H14V36a10 10 0 0 1 10-10zm40 7a2.5 2.5 0 0 0 0 5h32a2.5 2.5 0 0 0 0-5z"/>
+    <rect x="2" y="38" width="20" height="28" rx="10"/><rect x="138" y="38" width="20" height="28" rx="10"/>
+    <rect x="20" y="50" width="120" height="14" rx="4"/>
+  </svg>
+  <div class="eyebrow">404 / Page not found</div>
+  <h1>The couch <em>remembers.</em></h1>
+  <p>Whatever was here slipped between the cushions. The returns are still where you left them.</p>
+  <nav><a href="/">2026 Atlas</a><a href="/elections.html">Election Desk</a><a href="/elections.html?view=outlook">What’s next</a></nav>
+</main>
+</body>
+</html>
