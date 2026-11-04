@@ -1,4 +1,4 @@
-COLIN’S COUNTING COUCH / RELEASE AUDIT
+COUNTING COUCH / RELEASE AUDIT
 November 4, 2026
 
 Checks covered 2026 navigation, live atlas and recap, the logo’s visual centering,
