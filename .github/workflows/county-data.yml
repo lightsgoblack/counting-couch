@@ -8,6 +8,7 @@ on:
     paths:
       - scripts/import-counties.py
       - .github/workflows/county-data.yml
+      - data/countypres_2000-2024.csv
 
 permissions:
   contents: write

@@ -21,11 +21,11 @@ The National Archives [Electoral College results](https://www.archives.gov/elect
 
 ## County map data
 
-The 3D county map (`dist/county.js`, opened from a state's race detail or with `index.html?county=MS`) reads `dist/counties/XX.json`. The **County map data** GitHub Action builds those files with `python3 scripts/import-counties.py RAW_DIR --fetch`, which downloads:
+The 3D county map (`dist/county.js`, opened from a state's race detail or with `index.html?county=MS`) reads `dist/counties/XX.json`. The **County map data** GitHub Action builds those files with `python3 scripts/import-counties.py RAW_DIR --fetch`, which downloads the shapes and reads the committed returns:
 
 | Input | Source |
 | --- | --- |
-| `countypres.csv` | [MIT Election Data and Science Lab, County Presidential Election Returns 2000–2024](https://doi.org/10.7910/DVN/VOQCHQ), latest published version via the Dataverse API. |
+| `countypres.csv` | [MIT Election Data and Science Lab, County Presidential Election Returns 2000–2024](https://doi.org/10.7910/DVN/VOQCHQ). The Election Lab requires a short guestbook form, so a person downloads `countypres_2000-2024.csv` once and commits it to `data/`. |
 | `counties.zip` | [Census cartographic boundary counties, 1:5,000,000](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html) for the same year. Public domain. |
 
 Run it from the Actions tab, or it runs when the importer or workflow changes. Every county file is labeled `historical` with its year, office and sources. Counties whose shapes have no matching returns (Alaska's boroughs, some Connecticut regions) stay in the file as gaps and draw as dashed outlines. 2026 county returns are not wired in yet.

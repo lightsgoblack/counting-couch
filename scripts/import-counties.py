@@ -3,7 +3,8 @@
 
 Usage: python3 scripts/import-counties.py INPUT_DIR [--fetch] [--year 2024] [--out dist/counties]
 
---fetch downloads both inputs into INPUT_DIR first (used by the GitHub Action).
+--fetch downloads the Census shapes into INPUT_DIR and copies data/countypres_2000-2024.csv,
+which a person downloads once from Dataverse because the Election Lab requires a guestbook form.
 
 INPUT_DIR holds two files:
   countypres.csv   MIT Election Data and Science Lab "County Presidential Election
@@ -62,15 +63,19 @@ def fetch(folder, shapes_year):
             return urlopen(Request(url, headers={'User-Agent': 'counting-couch-import'}), timeout=120).read()
         except HTTPError as error:
             sys.exit(f'{url} returned HTTP {error.code}: {error.read()[:600].decode(errors="replace")}')
-    files = json.loads(get(f'{DATAVERSE}/datasets/:persistentId/versions/:latest-published/files?persistentId={COUNTYPRES_DOI}'))['data']
-    match = [f for f in files if f['label'].lower().startswith('countypres')]
-    if not match:
-        sys.exit('No countypres file in the Dataverse listing: ' + ', '.join(f['label'] for f in files))
-    print('Downloading', match[0]['label'], json.dumps(match[0])[:600])
-    (folder / 'countypres.csv').write_bytes(get(f"{DATAVERSE}/access/datafile/{match[0]['dataFile']['id']}?format=original"))
     url = CENSUS_COUNTIES.format(year=shapes_year)
     print('Downloading', url)
     (folder / 'counties.zip').write_bytes(get(url))
+    meta = json.loads(get(f'{DATAVERSE}/datasets/:persistentId/?persistentId={COUNTYPRES_DOI}'))['data']['latestVersion']
+    print('MIT Election Lab dataset version', meta.get('versionNumber'), meta.get('versionMinorNumber'),
+          'license:', json.dumps(meta.get('license') or meta.get('termsOfUse')))
+    # The Election Lab gates this file behind a Dataverse guestbook, so a person downloads it once
+    # and commits it as data/countypres_2000-2024.csv. The importer never fills the guestbook itself.
+    local = Path(__file__).resolve().parent.parent / 'data' / 'countypres_2000-2024.csv'
+    if not local.exists():
+        sys.exit(f'Missing {local.name}. Download it from https://doi.org/10.7910/DVN/VOQCHQ '
+                 '(Access File, Original File Format) and commit it to data/.')
+    (folder / 'countypres.csv').write_bytes(local.read_bytes())
 
 
 def fips(value):
