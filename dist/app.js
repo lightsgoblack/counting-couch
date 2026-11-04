@@ -254,7 +254,7 @@ function renderStatus() {
   signal.dataset.live=String(status==='LIVE RETURNS');
   $('#race-count').textContent=feed?nf.format(races):'—';
   $('#state-count').textContent=feed?nf.format(Object.keys(feed.races).length):'—';
-  $('#timestamp').textContent=time?'National feed checked · '+time : error?'The feed could not be reached.':'Waiting for a timestamped state update.';
+  $('#timestamp').textContent=time?(error?'Live feed unreachable · showing snapshot from '+time:'National feed checked · '+time) : error?'The feed could not be reached.':'Waiting for a timestamped state update.';
   const activeStates=coverage();
   const matrix=$('#matrix'), oldCode=document.activeElement?.dataset.signalCode;
   matrix.replaceChildren(...[...activeStates].sort(([a],[b])=>a.localeCompare(b)).map(([code,items])=>{
@@ -460,7 +460,8 @@ async function refresh(force=false) {
       }
       queueRaceCalls(national);
       failures=0;
-    } catch {
+    } catch (error) {
+      console.warn('[Counting Couch] National feed unavailable, using snapshot:', error?.message ?? error);
       failures++;
       await Promise.all(Object.keys(offices).filter(kind=>!feeds.has(kind)).map(async kind=>{
         try {
