@@ -324,6 +324,8 @@ function renderDetail() {
     renderedDetailKey=key;
   } else detail.classList.remove('detail-reveal');
   detail.replaceChildren(node('div',featured?'RACE SPOTLIGHT / '+offices[office].toUpperCase():offices[office].toUpperCase()+' / RACE DETAIL','micro'),title);
+  const countyState=(selected||state).slice(0,2);
+  if(countyState && typeof CountyMap!=='undefined') detail.append(CountyMap.button(countyState));
   if(!hasVotes(race) && !race?.cands?.length){
     detail.append(node('p',seat||state?loading?'Connecting to the election results feed.':'This feed has no vote totals for this selection. Check the election office for its latest information.':'Tap a state on the map or select a race to see the reported vote totals and margins.','hint'));
     if(state) {

@@ -102,10 +102,17 @@
 </section>
 </main>
 <footer><div class="micro">COUNTING COUCH / 2026</div><div>Unofficial state returns via <a href="https://civicapi.org/">civicAPI</a> and the <a href="https://sitmap.live/elections/us-2026">sitmap.live data feed</a>. Race calls are attributed to civicAPI. State offices certify the results.</div><a href="https://github.com/topojson/us-atlas">Map source</a></footer>
+<dialog id="county-view" class="county-view" aria-labelledby="county-title">
+<div class="cv-head"><div><span class="micro">01B / COUNTY ATLAS</span><h2 id="county-title">County map</h2></div><div class="cv-tools"><div class="cv-seg" role="group" aria-label="Column height"><button type="button" data-height="votes" aria-pressed="true">Votes</button><button type="button" data-height="margin" aria-pressed="false">Margin</button><button type="button" data-height="flat" aria-pressed="false">Flat</button></div><button type="button" id="cv-reset" aria-label="Reset county map view" title="Reset view">⌖</button><button type="button" id="cv-close" aria-label="Close county map" title="Close">✕</button></div></div>
+<div class="cv-status" id="county-status"></div>
+<div class="cv-body"><div class="cv-stage"><canvas id="county-canvas" tabindex="0" role="img" aria-label="3D county map. Use the county list to choose a county with the keyboard. Arrow keys rotate the view."></canvas><span class="cv-tip">DRAG TO ORBIT · PINCH OR SCROLL TO ZOOM · TAP A COUNTY</span></div><aside class="cv-side"><label class="cv-pick-label">County<select id="county-pick"></select></label><div id="county-card" class="cv-card" aria-live="polite"></div></aside></div>
+<div class="cv-foot"><div class="cv-legend" aria-hidden="true"><span>D +40</span><i></i><span>R +40</span></div><span>Height shows total votes, or the size of the margin. Dashed areas have no joined returns.</span></div>
+</dialog>
 <div id="toast" role="status"></div>
 <div id="call-celebration" hidden aria-hidden="true"><div class="call-atmosphere"></div><canvas id="call-confetti"></canvas><div class="call-stage"><div class="call-banner"><div class="call-medallion"><svg viewBox="0 0 52 52" aria-hidden="true"><path d="M26 3 46 14v24L26 49 6 38V14zM6 14l20 12 20-12M26 26v23"/><path d="m18 30 6 5 11-11"/></svg></div><span>THE COUCH CALL</span><strong id="call-winner"></strong><small id="call-race"></small><div class="call-lights"></div></div></div></div>
 <p id="call-announcer" class="screen-reader-only" aria-live="polite" aria-atomic="true"></p>
 <script src="geography.js" defer></script>
+<script src="county.js" defer></script>
 <script src="national.js" defer></script>
 <script src="prior-party.js" defer></script>
 <script src="celebrate.js" defer></script>
