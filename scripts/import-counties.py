@@ -55,12 +55,18 @@ CENSUS_COUNTIES = 'https://www2.census.gov/geo/tiger/GENZ{year}/shp/cb_{year}_us
 def fetch(folder, shapes_year):
     from urllib.request import Request, urlopen
     folder.mkdir(parents=True, exist_ok=True)
-    get = lambda url: urlopen(Request(url, headers={'User-Agent': 'counting-couch-import'}), timeout=120).read()
+    from urllib.error import HTTPError
+
+    def get(url):
+        try:
+            return urlopen(Request(url, headers={'User-Agent': 'counting-couch-import'}), timeout=120).read()
+        except HTTPError as error:
+            sys.exit(f'{url} returned HTTP {error.code}: {error.read()[:600].decode(errors="replace")}')
     files = json.loads(get(f'{DATAVERSE}/datasets/:persistentId/versions/:latest-published/files?persistentId={COUNTYPRES_DOI}'))['data']
     match = [f for f in files if f['label'].lower().startswith('countypres')]
     if not match:
         sys.exit('No countypres file in the Dataverse listing: ' + ', '.join(f['label'] for f in files))
-    print('Downloading', match[0]['label'])
+    print('Downloading', match[0]['label'], json.dumps(match[0])[:600])
     (folder / 'countypres.csv').write_bytes(get(f"{DATAVERSE}/access/datafile/{match[0]['dataFile']['id']}?format=original"))
     url = CENSUS_COUNTIES.format(year=shapes_year)
     print('Downloading', url)
