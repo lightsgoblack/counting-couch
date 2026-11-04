@@ -1,0 +1,39 @@
+name: County map data
+
+# Rebuilds dist/counties/ from the MIT Election Lab county returns and Census county shapes.
+# Runs by hand from the Actions tab, or when the importer or this workflow changes.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - scripts/import-counties.py
+      - .github/workflows/county-data.yml
+      - data/countypres_2000-2024.csv
+
+permissions:
+  contents: write
+
+concurrency:
+  group: county-data-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyshp==2.3.1
+      - name: Download sources and build county files
+        run: python3 scripts/import-counties.py "$RUNNER_TEMP/county-raw" --fetch
+      - name: Commit updated county files
+        run: |
+          git add dist/counties
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Rebuild county map data"
+          git push
