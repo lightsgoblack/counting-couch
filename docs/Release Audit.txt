@@ -1,0 +1,20 @@
+COLIN’S COUNTING COUCH / RELEASE AUDIT
+November 4, 2026
+
+Checks covered 2026 navigation, live atlas and recap, the logo’s visual centering,
+320–1920 px widths, date and office switching, state filtering, archive deep links,
+side-by-side comparisons, year reversal and downloadable CSV, early 2028 polling,
+and the featured Los Angeles, San Diego and La Mesa views.
+
+The historical import checks candidate presence, unique contest IDs, nonnegative
+vote totals and presidential state coverage. National electoral tallies were
+checked against the National Archives, with explicit treatment for Georgia’s
+disputed electors in 1868, the death of Horace Greeley in 1872 and Alabama’s
+split slate in 1960. The 2018 North Carolina District 9 return is marked
+uncertified. The Georgia Senate runoffs use their deciding rounds. The Florida
+2020 unopposed House race without a vote total is marked unavailable.
+
+Some older congressional and gubernatorial results remain in linked primary
+archives. The local results provider has uneven coverage. San Diego County’s
+in-app data is a published snapshot. The official county portal has the newest
+returns. Video status reflects the latest lineup check and can change.

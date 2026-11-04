@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101510">
+<meta name="description" content="An interactive atlas of official state returns for the 2026 U.S. midterms.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Colin’s Counting Couch">
+<meta property="og:title" content="Colin’s Counting Couch · 2026 Midterms">
+<meta property="og:description" content="Explore the 3D election map, follow the closest races, and watch coverage alongside the returns.">
+<meta property="og:url" content="https://election.colinrobinson.com/">
+<meta property="og:image" content="https://election.colinrobinson.com/share-card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Colin’s Counting Couch, with a green 3D map of the United States.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://election.colinrobinson.com/share-card.jpg">
+<link rel="icon" href="icon.svg"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css">
+<title>Colin’s Counting Couch · U.S. Midterms 2026</title>
+</head>
+<body>
+<a class="skip" href="#race-search">Skip to the race explorer</a>
+<header class="mast"><a class="brand" href="./"><img src="icon.svg" alt="" width="32" height="32"><span>COLIN’S COUNTING COUCH</span></a><div class="mast-actions"><a class="elections-nav" href="elections.html">Election Desk</a><a id="coverage-link" href="#coverage">Watch</a><div class="layout-select" role="group" aria-label="Screen layout"><button id="computer-mode" type="button" aria-pressed="false">Computer</button><button id="tv-mode" type="button" aria-pressed="true">TV</button></div><button id="fill-screen" type="button" hidden>Full screen</button><span id="signal" role="status"><i></i> CONNECTING</span><button id="share" type="button" aria-label="Share current view">Share <span aria-hidden="true">↗</span></button></div></header>
+<section class="recap" id="election-recap" aria-label="National election recap">
+  <div class="recap-brief">
+    <div class="recap-title"><span class="micro">NATIONAL RECAP</span><strong id="recap-called" aria-live="polite">Loading returns</strong></div>
+    <div id="recap-control" aria-label="Chamber control"></div>
+    <div id="recap-flip-count" aria-label="Seats flipped"></div>
+  </div>
+  <div class="recap-watch"><span class="micro">CLOSEST UNCALLED</span><div id="recap-watch"></div></div>
+  <details class="recap-details">
+    <summary>Full recap <span aria-hidden="true">▾</span></summary>
+    <div class="recap-drawer">
+      <div class="recap-drawer-head"><h2>Election at a glance</h2><button type="button" id="close-recap">Close</button></div>
+      <div id="recap-drawer"></div>
+      <p class="hint">Coverage includes U.S. Senate, U.S. House and governor. The governor flip count covers the 36 state races. Chamber totals use called seats and Senate holdovers, including independents who caucus with a party.</p>
+      <p class="hint">Flips compare civicAPI’s calls with its election-day seat-holder party. Close races are ranked by the top two candidates’ margin among reported votes after at least 1,000 votes are counted. Rankings can change as more ballots come in. <a href="https://sitmap.live/elections/us-2026" target="_blank" rel="noopener noreferrer">Source and methodology ↗</a></p>
+    </div>
+  </details>
+</section>
+<main>
+<section class="hero" aria-labelledby="title">
+<div class="intro"><div class="eyebrow"><span></span> GENERAL ELECTION <b> / </b> 03 NOV 2026</div><h1 id="title">Colin’s Counting <em>Couch.</em></h1><p>Enter the atlas. Explore the contests, follow the count, and see where the margins are narrowing.</p></div>
+<div class="chamber">
+<div class="mapbox">
+<div class="maphead"><div><span class="micro">01 / INTERACTIVE ATLAS</span><h2 id="map-title">U.S. Senate</h2></div><div class="tools"><button id="view" aria-pressed="false" title="Switch between perspective and overhead view">3D</button><button id="zoom-in" aria-label="Zoom in" title="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out" title="Zoom out">−</button><button id="reset" aria-label="Reset map view" title="Reset map view">⌖</button></div></div>
+<svg id="atlas" viewBox="0 0 920 554" role="img" aria-label="Interactive map of the United States. Use the state selector below for keyboard navigation."><defs><radialGradient id="halo"><stop stop-color="#8ba854" stop-opacity=".17"/><stop offset="1" stop-color="#8ba854" stop-opacity="0"/></radialGradient></defs><ellipse cx="455" cy="294" rx="450" ry="248" fill="url(#halo)"/><g id="grid"></g><g id="land"></g><g id="labels"></g></svg>
+<div class="mapfoot"><div class="legend"><span class="dem">Dem. lead</span><span class="rep">Rep. lead</span><span class="other">Other lead</span><span class="none">No lead data</span></div><span class="maptip">DRAG TO TILT · TAP A STATE</span></div>
+<div class="keynote" id="map-key"></div><div id="map-error" hidden>Map geometry unavailable. Explore the returns using the race list.</div>
+</div>
+<aside class="console" aria-label="Choose contest type">
+<div class="console-head micro">02 / CHOOSE A CHAMBER</div>
+<div class="modes" role="group" aria-label="Contest type">
+<button class="mode" data-office="Senate" aria-pressed="true"><span class="glyph" aria-hidden="true">♜</span><span><small>01 / UPPER CHAMBER</small><strong>Senate</strong></span><span class="arrow" aria-hidden="true">↗</span></button>
+<button class="mode" data-office="House" aria-pressed="false"><span class="glyph" aria-hidden="true">⬡</span><span><small>02 / LOWER CHAMBER</small><strong>House</strong></span><span class="arrow" aria-hidden="true">↗</span></button>
+<button class="mode" data-office="Governor" aria-pressed="false"><span class="glyph" aria-hidden="true">◇</span><span><small>03 / STATE EXECUTIVE</small><strong>Governor</strong></span><span class="arrow" aria-hidden="true">↗</span></button>
+</div>
+<div class="matrix-wrap"><div class="micro">STATE SIGNALS</div><p>Open a state with reported votes.</p><div id="matrix" aria-label="States with votes"></div></div><div class="brief"><div class="micro">FEED STATUS</div><div class="statrow"><div><b id="race-count">—</b><small>RACES WITH VOTES</small></div><div><b id="state-count">—</b><small>CONTESTS LISTED</small></div></div><p id="timestamp">Waiting for the first feed response.</p><p id="next-check"></p><span id="update-meter" aria-hidden="true"></span></div>
+</aside>
+</div>
+</section>
+<section class="explore" aria-labelledby="race-title"><div class="section-head"><div><div class="micro">03 / RACE EXPLORER</div><h2 id="race-title">Read the returns.</h2></div><div class="filters"><label for="race-search">Find a race or candidate<input type="search" id="race-search" placeholder="State, district or candidate"></label><label for="state">Filter by state<select id="state"><option value="">All states</option></select></label></div></div>
+<div class="more-races">The atlas covers U.S. Senate, U.S. House and governor. <a href="elections.html?view=local">Local race results ↗</a> · <a href="https://votes.decisiondeskhq.com/">More results at Decision Desk HQ ↗</a></div><div class="explorer"><div class="raceboard"><div class="racebar"><span id="list-caption">SENATE RACES</span><button id="refresh" type="button">Refresh ↻</button></div><div id="race-list"></div></div><div id="detail" aria-labelledby="detail-title" class="detail" tabindex="-1"></div></div>
+</section>
+<section id="coverage" class="coverage" aria-labelledby="coverage-title">
+<div class="section-head"><div><div class="micro">04 / BROADCAST SIGNALS</div><h2 id="coverage-title">Coverage Desk.</h2></div><p>Live broadcasts first. Use Sound on to hear the selected feed.</p></div>
+<div class="coverage-layout"><div class="player-slot">
+<div id="video-player" class="video-player">
+<div class="player-bar"><span class="player-heading"><strong id="on-air-title">Select a broadcast</strong><span id="stream-kind" class="station-badge" hidden></span><small id="stream-status" role="status"></small></span><div><a id="on-air-link" href="https://www.youtube.com/watch?v=XPcDQtzq-hY" target="_blank" rel="noopener" aria-label="Open current broadcast on YouTube" hidden>↗</a><button id="retry-video" type="button" hidden>Retry video</button><button id="stream-audio" type="button" aria-pressed="false" hidden>Sound on</button><button id="pin-player" aria-pressed="true" hidden>Unpin</button><button id="stop-player" aria-label="Stop video" hidden>×</button></div></div>
+<div id="video-mount"><div class="broadcast-poster"><div class="signal-rings" aria-hidden="true"><i></i><i></i><i></i><i></i><b>◇</b></div><div class="micro">BROADCAST SIGNALS / 2026</div><p>Choose a channel to watch while you explore.</p></div><button id="play-featured" type="button">▶ &nbsp; Play latest live feed</button></div>
+</div>
+<div class="dock-guide"><span class="micro">PINNED PLAYER</span><p>Your video stays in the corner while you browse races.</p><a href="#race-title">Back to results ↑</a></div>
+</div>
+<div class="station-lineup" aria-label="Available video broadcasts">
+<div class="station-section"><h3 class="micro">LIVE COVERAGE</h3><div class="stations" id="live-stations">
+<div class="station"><button type="button" data-video="gAMOWRBuja0" data-name="Sky News" data-kind="LIVE" data-live-start="2026-11-04T20:51:50+00:00" data-live-until="2026-11-04T23:40:13Z" aria-pressed="false"><span class="station-badge" aria-label="LIVE">LIVE</span><span><strong>Sky News</strong><small>Midterm results and analysis</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=gAMOWRBuja0" target="_blank" rel="noopener" aria-label="Open Sky News on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="Sh0tzShb-ac" data-name="LiveNOW from FOX" data-kind="LIVE" data-live-start="2026-11-04T13:36:55+00:00" data-live-until="2026-11-04T23:40:13Z" aria-pressed="false"><span class="station-badge" aria-label="LIVE">LIVE</span><span><strong>LiveNOW from FOX</strong><small>Midterm results and reaction</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=Sh0tzShb-ac" target="_blank" rel="noopener" aria-label="Open LiveNOW from FOX on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="JJJHa3WkINw" data-name="CBS News" data-kind="LIVE" data-live-start="2026-11-04T12:00:19+00:00" data-live-until="2026-11-04T23:40:13Z" aria-pressed="false"><span class="station-badge" aria-label="LIVE">LIVE</span><span><strong>CBS News</strong><small>CBS News 24/7</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=JJJHa3WkINw" target="_blank" rel="noopener" aria-label="Open CBS News on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="1ViVnrjVtQY" data-name="ABC News Live" data-kind="LIVE" data-live-start="2026-11-04T10:57:39+00:00" data-live-until="2026-11-04T23:40:13Z" aria-pressed="false"><span class="station-badge" aria-label="LIVE">LIVE</span><span><strong>ABC News Live</strong><small>November 4 coverage</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=1ViVnrjVtQY" target="_blank" rel="noopener" aria-label="Open ABC News Live on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="B9i_01yEgt0" data-name="NBC News" data-kind="LIVE" data-live-start="2026-11-03T20:55:56+00:00" data-live-until="2026-11-04T23:40:13Z" aria-pressed="false"><span class="station-badge" aria-label="LIVE">LIVE</span><span><strong>NBC News</strong><small>Midterm election analysis</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=B9i_01yEgt0" target="_blank" rel="noopener" aria-label="Open NBC News on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="hAavLm_mMmE" data-name="Scripps News" data-kind="LIVE" data-live-start="2026-11-04T11:37:13+00:00" data-live-until="2026-11-04T23:40:13Z" aria-pressed="false"><span class="station-badge" aria-label="LIVE">LIVE</span><span><strong>Scripps News</strong><small>November 4 headlines</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=hAavLm_mMmE" target="_blank" rel="noopener" aria-label="Open Scripps News on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="lQ5RGYe3TeM" data-name="USA TODAY" data-kind="LIVE" data-live-start="2026-11-04T15:48:05+00:00" data-live-until="2026-11-04T23:40:13Z" aria-pressed="false"><span class="station-badge" aria-label="LIVE">LIVE</span><span><strong>USA TODAY</strong><small>Post-election press conferences</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=lQ5RGYe3TeM" target="_blank" rel="noopener" aria-label="Open USA TODAY on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="LuKwFajn37U" data-name="DW News" data-kind="LIVE" data-live-start="2025-03-31T17:50:08+00:00" aria-pressed="false"><span class="station-badge" aria-label="LIVE">LIVE</span><span><strong>DW News</strong><small>24/7 international coverage</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=LuKwFajn37U" target="_blank" rel="noopener" aria-label="Open DW News on YouTube">↗</a></div>
+</div><p class="station-note">Live streams checked Nov. 4 at 1:40 PM PST. For the latest feed, also try <a href="https://abcnews.com/live" target="_blank" rel="noopener">ABC News Live ↗</a> or <a href="https://www.cbsnews.com/live/" target="_blank" rel="noopener">CBS News 24/7 ↗</a>.</p></div>
+<div class="station-section" id="replay-section"><h3 class="micro">RECAPS &amp; REPLAYS</h3><div class="stations" id="replay-stations">
+<div class="station"><button type="button" data-video="QreQXPsApEE" data-name="C-SPAN" data-kind="RECAP" aria-pressed="false"><span class="station-badge" aria-label="RECAP">RECAP</span><span><strong>C-SPAN</strong><small>Election coverage · Part 2</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=QreQXPsApEE" target="_blank" rel="noopener" aria-label="Open C-SPAN on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="9urKgu-4HeM" data-name="Associated Press" data-kind="RECAP" aria-pressed="false"><span class="station-badge" aria-label="RECAP">RECAP</span><span><strong>Associated Press</strong><small>Jeffries on the House results</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=9urKgu-4HeM" target="_blank" rel="noopener" aria-label="Open Associated Press on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="XPcDQtzq-hY" data-name="Breaking Points" data-kind="RECAP" aria-pressed="false"><span class="station-badge" aria-label="RECAP">RECAP</span><span><strong>Breaking Points</strong><small>November 4 midterm analysis</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=XPcDQtzq-hY" target="_blank" rel="noopener" aria-label="Open Breaking Points on YouTube">↗</a></div>
+<div class="station"><button type="button" data-video="laKS1cZE6Yw" data-name="ABC News" data-kind="RECAP" aria-pressed="false"><span class="station-badge" aria-label="RECAP">RECAP</span><span><strong>ABC News</strong><small>Schumer reacts to Senate results</small></span><span class="station-play" aria-hidden="true">▶</span></button><a href="https://www.youtube.com/watch?v=laKS1cZE6Yw" target="_blank" rel="noopener" aria-label="Open ABC News on YouTube">↗</a></div>
+</div><p class="station-note"><a href="https://pr.pbs.org/video/november-3-2026-pbs-news-hour-full-episode-1793682001/" target="_blank" rel="noopener">PBS News Hour election recap ↗</a> · <a href="https://www.youtube.com/live/jFK8EKRQ33g" target="_blank" rel="noopener">Original Breaking Points member stream ↗</a> · YouTube membership required for the member stream.</p></div>
+<div class="station-section" id="unconfirmed-section" hidden><h3 class="micro">CHECK LIVE STATUS</h3><div class="stations" id="unconfirmed-stations"></div></div>
+</div></div>
+<div id="tv-live" aria-label="National race calls">
+<div class="tv-live-heading"><span class="micro">NATIONAL RESULTS</span><a href="https://sitmap.live/elections/us-2026">civicAPI via sitmap.live ↗</a></div>
+<div id="tv-race-totals"></div>
+<div class="tv-live-heading"><span class="micro">LATEST RACE CALLS</span></div>
+<div id="tv-recent-calls"></div>
+</div>
+<template id="video-placeholder"><div class="broadcast-poster"><div class="signal-rings" aria-hidden="true"><i></i><i></i><i></i><i></i><b>◇</b></div><div class="micro">BROADCAST SIGNALS / 2026</div><p>Choose a channel to watch while you explore.</p></div><button id="play-featured" type="button">▶ &nbsp; Play latest live feed</button></template>
+<div class="external-coverage"><div class="micro">MORE RESULTS &amp; COVERAGE</div><div class="coverage-links"><a href="https://apnews.com/article/ef6199e25927a9ac9f4c18eae0e497cd" target="_blank" rel="noopener"><strong>Associated Press <span aria-hidden="true">↗</span></strong><small>Live updates and race calls</small></a><a href="https://votes.decisiondeskhq.com/" target="_blank" rel="noopener"><strong>Decision Desk HQ <span aria-hidden="true">↗</span></strong><small>Public results and race calls</small></a><a href="https://apps.npr.org/2026-election-results/" target="_blank" rel="noopener"><strong>NPR <span aria-hidden="true">↗</span></strong><small>National results and race maps</small></a><a href="https://electionresults.sos.ca.gov/" target="_blank" rel="noopener"><strong>California Secretary of State <span aria-hidden="true">↗</span></strong><small>Official California returns</small></a><a href="https://abcnews.com/live?stream=1" target="_blank" rel="noopener"><strong>ABC News Live <span aria-hidden="true">↗</span></strong><small>Broadcaster’s election-night player</small></a><a href="https://www.cbsnews.com/live-updates/election-day-2026-midterms/" target="_blank" rel="noopener"><strong>CBS News <span aria-hidden="true">↗</span></strong><small>Election-night updates and video</small></a><a href="https://www.foxnews.com/elections" target="_blank" rel="noopener"><strong>Fox News <span aria-hidden="true">↗</span></strong><small>Election center and race coverage</small></a><a href="https://www.livenowfox.com/live-blog/news/2026-midterm-election-results-live-blog" target="_blank" rel="noopener"><strong>LiveNOW from FOX <span aria-hidden="true">↗</span></strong><small>Election-night live blog</small></a></div></div>
+</section>
+</main>
+<footer><div class="micro">COLIN’S COUNTING COUCH / 2026</div><div>Unofficial state returns via <a href="https://civicapi.org/">civicAPI</a> and the <a href="https://sitmap.live/elections/us-2026">sitmap.live data feed</a>. Race calls are attributed to civicAPI. State offices certify the results.</div><a href="https://github.com/topojson/us-atlas">Map source</a></footer>
+<div id="toast" role="status"></div>
+<div id="call-celebration" hidden aria-hidden="true"><div class="call-atmosphere"></div><canvas id="call-confetti"></canvas><div class="call-stage"><div class="call-banner"><div class="call-medallion"><svg viewBox="0 0 52 52" aria-hidden="true"><path d="M26 3 46 14v24L26 49 6 38V14zM6 14l20 12 20-12M26 26v23"/><path d="m18 30 6 5 11-11"/></svg></div><span>THE COUCH CALL</span><strong id="call-winner"></strong><small id="call-race"></small><div class="call-lights"></div></div></div></div>
+<p id="call-announcer" class="screen-reader-only" aria-live="polite" aria-atomic="true"></p>
+<script src="geography.js" defer></script>
+<script src="national.js" defer></script>
+<script src="prior-party.js" defer></script>
+<script src="celebrate.js" defer></script>
+<script src="app.js" defer></script>
+<script src="coverage.js" defer></script>
+</body></html>

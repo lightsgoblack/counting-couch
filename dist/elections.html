@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101510">
+<meta name="description" content="Explore U.S. election returns going back to 1868, compare results, and track the races ahead.">
+<meta property="og:title" content="The Election Desk · Colin’s Counting Couch">
+<meta property="og:description" content="Browse historical election results and see the upcoming U.S. election calendar.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://election.colinrobinson.com/elections.html">
+<meta property="og:image" content="https://election.colinrobinson.com/share-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon.svg">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="elections.css">
+<title>The Election Desk · Colin’s Counting Couch</title>
+</head>
+<body class="election-desk">
+<a class="skip" href="#desk-main">Skip to elections</a>
+<header class="mast">
+  <a class="brand" href="./"><img src="icon.svg" alt="" width="32" height="32"><span>COLIN’S COUNTING COUCH</span></a>
+  <a class="elections-nav" href="./">2026 Atlas ↗</a>
+</header>
+<main id="desk-main">
+  <div class="intro desk-intro">
+    <div class="eyebrow"><span></span> THE COUNTING COUCH <b>/</b> ELECTION DESK</div>
+    <h1>The Election <em>Desk.</em></h1>
+    <p>Trace the returns back to 1868, compare election years, and follow the races ahead.</p>
+  </div>
+  <nav class="desk-tabs" aria-label="Election desk views">
+    <a id="archive-tab" href="?view=archive" aria-current="page"><span class="micro">01 / HISTORY</span><strong>Results archive</strong></a>
+    <a id="compare-tab" href="?view=compare"><span class="micro">02 / ANALYSIS</span><strong>Compare results</strong></a>
+    <a id="outlook-tab" href="?view=outlook"><span class="micro">03 / NEXT RACES</span><strong>Election outlook</strong></a>
+    <a id="local-tab" href="?view=local"><span class="micro">04 / CITIES &amp; COUNTIES</span><strong>Local races</strong></a>
+    <a href="./"><span class="micro">05 / MIDTERMS</span><strong>2026 Atlas ↗</strong></a>
+  </nav>
+  <section id="archive" aria-labelledby="archive-title">
+    <div class="desk-section-title"><div><span class="micro">HISTORICAL RETURNS</span><h2 id="archive-title">Elections through the years</h2></div><p>Choose a year, an office, then a state or district.</p></div>
+    <div class="desk-filters archive-era"><label>Era<select id="archive-era"></select></label><label>Election year<select id="archive-year-select"></select></label><a id="archive-record" hidden>Official federal returns ↗</a><a id="archive-compare" href="?view=compare">Compare this election ↗</a></div>
+    <div class="year-strip" id="archive-years" role="group" aria-label="Election years in this era"></div>
+    <div id="archive-offices" class="desk-offices" role="group" aria-label="Office"></div>
+    <p id="archive-status" class="hint" role="status">Loading historical results…</p>
+    <div id="archive-highlights" class="desk-stats"></div>
+    <div class="desk-workbench">
+      <div class="desk-map">
+        <div class="desk-panel-heading"><span class="micro" id="archive-map-title">STATE RESULTS</span><button type="button" id="clear-state">All states</button></div>
+        <svg id="history-map" viewBox="0 0 920 554" aria-label="State election map. A state dropdown is available in the race list." role="group"><g id="history-grid"></g><g id="history-land"></g><g id="history-labels" aria-hidden="true"></g></svg>
+        <div class="desk-map-key"><span class="dem">Democratic</span><span class="rep">Republican</span><span class="other">Other / mixed</span><span>Gray · no result shown</span></div>
+        <p id="archive-map-caption" class="hint"></p>
+      </div>
+      <div class="desk-inspector" id="history-detail" tabindex="-1" aria-label="Selected race"></div>
+    </div>
+    <div class="desk-races">
+      <div class="desk-section-title"><div><span class="micro">RACE FINDER</span><h2>Browse the returns</h2></div>
+      <div class="desk-filters"><label>State<select id="archive-state"><option value="">All states</option></select></label><label>Search<input type="search" id="archive-search" placeholder="Race or candidate"></label><label>Sort<select id="archive-sort"><option value="state">State and district</option><option value="margin">Closest margins</option></select></label></div></div>
+      <p class="hint" id="archive-count"></p>
+      <div class="archive-race-list" id="archive-races"></div>
+      <button type="button" id="archive-more" hidden>Show more races</button>
+    </div>
+    <details class="desk-method">
+      <summary>Coverage, sources and methodology</summary>
+      <div class="desk-filters"><label>Official federal records by year<select id="federal-record-year"></select></label><a id="federal-record-link" href="https://history.house.gov/Institution/Election-Statistics/Election-Statistics/">Open House Clerk records ↗</a></div>
+      <p>Presidential state returns run from 1868 to 2024, congressional returns from 1976 to 2024, and selected governor returns from 1990 to 2025. The era controls list years with interactive data. Earlier cycles have gaps where no popular vote was held or the source has no tabulation. The <a href="https://history.house.gov/Institution/Election-Statistics/Election-Statistics/">House Clerk’s official archive</a> has earlier federal records and midterms.</p>
+      <p>Pre-1976 presidential popular votes are adapted from <a href="https://theamericanvote.com/data">The American Vote, State results in U.S. presidential elections, 1789–2024</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>). This site groups candidates into party display categories and computes shares from the included votes. National electoral totals are checked against the National Archives.</p>
+      <p>Federal returns from 1976 onward are from MIT Election Data and Science Lab’s <a href="https://doi.org/10.7910/DVN/42MVDX">presidential</a>, <a href="https://doi.org/10.7910/DVN/PEJ5QU">Senate</a> and <a href="https://doi.org/10.7910/DVN/IG0UN2">House</a> datasets. See also the <a href="https://www.fec.gov/introduction-campaign-finance/election-results-and-voting-information/">Federal Election Commission’s official compilation</a> and <a href="https://www.archives.gov/electoral-college/results">Electoral College certificates</a>.</p>
+      <p>Governor returns are available where covered by the <a href="https://www.electionwrld.com/data">Election Wrld archive</a>, compiled from state offices and the <a href="https://doi.org/10.7910/DVN/DGDRDT">Cha, Kuriwaki and Snyder dataset</a>. This archive covers major general elections. Primary and local results have separate coverage.</p>
+      <p>Percentages use the candidate votes included in the displayed tabulation. Fusion ballot lines are combined by candidate name. Vote totals may reflect different rounds across states, and close margins are descriptive. House colors summarize district results within each state. Presidential colors show statewide popular votes, including in states that split their electoral votes.</p>
+    </details>
+  </section>
+  <section id="compare" aria-labelledby="compare-title" hidden>
+    <div class="desk-section-title"><div><span class="micro">COMPARISON LAB</span><h2 id="compare-title">What changed?</h2></div><p>Put two elections side by side and see how each state moved.</p></div>
+    <div class="desk-filters compare-controls">
+      <label>Office<select id="compare-office"></select></label>
+      <label>First year<select id="compare-a"></select></label>
+      <button id="compare-swap" type="button" aria-label="Swap first and second years">⇄</button>
+      <label>Second year<select id="compare-b"></select></label>
+      <label>State<select id="compare-state"><option value="">All comparable states</option></select></label>
+    </div>
+    <div class="compare-options desk-filters"><label>Sort states<select id="compare-sort"><option value="state">State name</option><option value="change">Largest change</option></select></label><label class="compare-flips"><input type="checkbox" id="compare-flips"> Changes only</label><button type="button" id="compare-download" disabled>Export CSV</button></div>
+    <p class="hint" id="compare-status" role="status"></p>
+    <div id="compare-summary" class="desk-stats"></div>
+    <details id="compare-national" class="desk-method compare-national" hidden><summary>National House seat balance</summary><p id="compare-national-counts"></p><p>Initial party divisions for the Congress elected in each year, as compiled by the <a href="https://history.house.gov/Institution/Party-Divisions/Party-Divisions/">House historian ↗</a>.</p></details>
+    <div id="compare-detail" class="compare-detail" tabindex="-1"></div>
+    <div class="compare-table-wrap" tabindex="0" aria-label="Scrollable state comparison">
+      <table class="compare-table"><thead><tr><th scope="col">State</th><th id="compare-col-a" scope="col">First year</th><th id="compare-col-b" scope="col">Second year</th><th scope="col" id="compare-change">Change</th></tr></thead><tbody id="compare-rows"></tbody></table>
+    </div>
+
+    <details class="desk-method">
+      <summary>How comparisons work</summary>
+      <p>Statewide swing is the change in the Democratic-minus-Republican share of all candidate votes shown. Third-party leaders still appear. Comparisons require a return in both years. For Senate, a state comparison can involve different seats, and only the regular race is compared.</p>
+      <p>House comparisons count top finishers by state. District boundaries and the number of seats can change, so the tool compares statewide delegations. Archive links open the underlying records.</p>
+    </details>
+  </section>
+  <section id="local" aria-labelledby="local-title" hidden>
+    <div class="desk-section-title"><div><span class="micro">LOCAL RESULTS / NOV. 3, 2026</span><h2 id="local-title">Closer to home</h2></div><p>Start with Southern California, or search the provider for a local contest elsewhere.</p></div>
+    <div class="desk-calendar" id="local-places" role="group" aria-label="Featured local results"></div>
+    <div class="desk-filters local-controls"><label>Filter this area<input type="search" id="local-filter" placeholder="Mayor, school board, candidate…"></label><button type="button" id="local-refresh">Refresh</button></div>
+    <p id="local-status" role="status" class="hint"></p>
+    <p id="local-sources" class="desk-sources"></p>
+    <div class="local-layout">
+      <div id="local-list" class="archive-race-list"></div>
+      <article id="local-detail" class="desk-inspector" tabindex="-1" aria-label="Local contest details"></article>
+    </div>
+    <button type="button" id="local-more" hidden>Show more contests</button>
+    <details class="desk-method">
+      <summary>Search beyond the featured areas</summary>
+      <form id="local-search-form" class="desk-filters">
+        <label>State<select id="local-search-state" required></select></label>
+        <label>City, county or contest<input type="search" id="local-search-query" required maxlength="80" placeholder="e.g. Orange County"></label>
+        <button type="submit">Search provider</button>
+      </form>
+      <p>Provider coverage varies. Official county portals are linked when available. Local ballot measures may require more than a simple majority, and multi-seat contests may elect more than one candidate.</p>
+    </details>
+  </section>
+  <section id="outlook" aria-labelledby="outlook-title" hidden>
+    <div class="desk-section-title"><div><span class="micro">ON THE HORIZON</span><h2 id="outlook-title">What’s on the ballot next</h2></div><p>Published dates, candidate fields, polling and model forecasts.</p></div>
+    <label class="past-toggle"><input type="checkbox" id="past-events"> Include past dates</label>
+    <div id="outlook-calendar" class="desk-calendar" role="group" aria-label="Upcoming elections"></div>
+    <div class="outlook-focus">
+      <div class="desk-section-title"><div><span class="micro" id="event-date"></span><h2 id="event-title"></h2></div><p id="event-description"></p></div>
+      <p id="event-sources" class="desk-sources"></p>
+      <div class="outlook-grid">
+        <section class="outlook-card" aria-labelledby="event-races-title">
+          <span class="micro" id="event-race-label">CANDIDATES &amp; RESULTS</span><h3 id="event-races-title">Race tracker</h3>
+          <div class="desk-panel-heading"><p id="event-status" class="hint" role="status"></p><button type="button" id="event-refresh">Refresh</button></div>
+          <div id="event-filters" class="desk-filters" hidden><label>Filter races<input type="search" id="event-search" placeholder="State, office or candidate"></label></div>
+          <div id="event-races"></div><button type="button" id="event-more" hidden>Show more races</button>
+          <div id="event-announcements"></div>
+        </section>
+        <div class="outlook-side">
+          <section class="outlook-card" aria-labelledby="event-polls-title">
+            <span class="micro">SURVEY RESULTS</span><h3 id="event-polls-title">Polling</h3>
+            <div id="event-polls"></div><p class="hint">Individual surveys show a snapshot of opinion. Sample, dates and original releases are included where available.</p>
+          </section>
+          <section class="outlook-card" aria-labelledby="event-model-title">
+            <span class="micro">MODEL ESTIMATES</span><h3 id="event-model-title">Forecast &amp; odds</h3>
+            <div id="event-model"></div><p class="hint">Forecasts are estimates from the named publisher. Odds appear only when the model publishes a probability.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+    <details class="desk-method">
+      <summary>How the outlook updates</summary>
+      <p>Federal general election dates follow the statutory November schedule. Featured off-year dates link to the responsible state election office. The race tracker queries <a href="https://civicapi.org/api-documentation">civicAPI</a> for the selected election and refreshes more frequently around election day while this page is open. Candidate listings and unofficial results appear as the provider publishes them.</p>
+      <p>The connected polling feed uses surveys indexed to the selected cycle and, where applicable, state and office. Selected 2028 primary polls link directly to the pollsters. The archive and outlook have different coverage. The 2026 atlas remains available from the Returns tab.</p>
+    </details>
+  </section>
+</main>
+<footer><span class="micro">COLIN’S COUNTING COUCH / ELECTION DESK</span><a href="./">Back to the 2026 atlas ↗</a></footer>
+<script src="geography.js" defer></script>
+<script src="elections.js" defer></script>
+<script src="compare.js" defer></script>
+<script src="outlook.js" defer></script>
+<script src="local.js" defer></script>
+</body>
+</html>
