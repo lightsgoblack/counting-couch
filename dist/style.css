@@ -319,7 +319,7 @@
 .cv-back{margin-top:10px;background:none;border:1px solid #4c5a44;border-radius:4px;color:var(--muted);padding:5px 9px;font:11px var(--mono);cursor:pointer}
 .cv-foot{display:flex;gap:14px;align-items:center;padding:9px 18px 12px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
 .cv-legend{display:flex;gap:6px;align-items:center;font:10px var(--mono);white-space:nowrap}
-.cv-legend i{display:block;width:120px;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--dem),var(--none),var(--rep))}
+.cv-legend i{display:block;width:120px;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--map-dem,var(--dem)),var(--map-none,var(--none)),var(--map-rep,var(--rep)))}
 @media(max-width:759px){
   .county-view{width:100vw;height:100dvh;border:0;border-radius:0}
   .cv-head{padding:10px 12px 6px;flex-wrap:wrap;gap:8px}.cv-head h2{font-size:24px}.cv-tools{width:100%;justify-content:space-between}.cv-status{padding:6px 12px;font-size:11px}

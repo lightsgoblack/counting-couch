@@ -11,7 +11,24 @@ const CountyMap = (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const home = {pitch: .82, yaw: -.1, zoom: 1};
   const fmt = new Intl.NumberFormat('en-US');
-  const RGB = {D: [120, 173, 240], N: [106, 120, 103], R: [237, 142, 139], O: [226, 191, 121]};
+  // All scene colors live here. Each reads a theme token from :root (see themes) and falls back to the
+  // original palette, so a theme switch only has to fire `themechange` on document.
+  const TOKENS = {
+    dem: ['--map-dem', '#78adf0'], rep: ['--map-rep', '#ed8e8b'], other: ['--map-other', '#e2bf79'], none: ['--map-none', '#6a7867'],
+    gap: ['--map-none-low', '#1b231a'], edge: ['--map-edge', 'rgba(16,21,16,.75)'], gapEdge: ['--map-edge', '#3b4a37'],
+    active: ['--map-edge-active', '#d1f897'], label: ['--map-label', '#ebece0'], labelActive: ['--map-label-active', '#d1f897'],
+    halo: ['--map-label-halo', '#101510'], grid: ['--map-grid', 'rgba(151,180,134,.16)'],
+  };
+  const C = {}, RGB = {};
+  const probe = document.createElement('canvas').getContext('2d', {willReadFrequently: true});
+  function toRGB(value) { probe.clearRect(0, 0, 1, 1); probe.fillStyle = '#000'; probe.fillStyle = value; probe.fillRect(0, 0, 1, 1); return [...probe.getImageData(0, 0, 1, 1).data.slice(0, 3)]; }
+  function loadColors() {
+    const css = getComputedStyle(document.documentElement);
+    for (const [key, [token, fallback]] of Object.entries(TOKENS)) C[key] = css.getPropertyValue(token).trim() || fallback;
+    Object.assign(RGB, {D: toRGB(C.dem), R: toRGB(C.rep), O: toRGB(C.other), N: toRGB(C.none)});
+  }
+  loadColors();
+  document.addEventListener('themechange', () => { loadColors(); if (view.open) queue(); });
   const gapNotes = {
     AK: 'Alaska reports by state house district, not by borough, so its returns do not join to borough shapes.',
     CT: 'Connecticut reports by town, and its census county areas changed to planning regions in 2022, so some areas do not join.',
@@ -31,7 +48,7 @@ const CountyMap = (() => {
   }
   function color(c) {
     const m = margin(c);
-    if (!m) return [33, 43, 32];
+    if (!m) return toRGB(C.gap);
     const side = m.lead === 'D' ? RGB.D : m.lead === 'R' ? RGB.R : RGB.O;
     return mix(RGB.N, side, Math.min(1, .2 + .8 * m.pts / 40));
   }
@@ -88,7 +105,7 @@ const CountyMap = (() => {
     ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
     ctx.clearRect(0, 0, W, H);
     // floor grid, matching the national atlas
-    ctx.strokeStyle = 'rgba(151,180,134,.16)'; ctx.lineWidth = .7;
+    ctx.strokeStyle = C.grid; ctx.lineWidth = .7;
     for (let g = -700; g <= 700; g += 100) {
       for (const [a, b] of [[[g, -700], [g, 700]], [[-700, g], [700, g]]]) {
         const p = project(...a, -6), q = project(...b, -6);
@@ -105,10 +122,10 @@ const CountyMap = (() => {
         for (let z = 0; z < h; z += step) ctx.fill(shape(c, z), 'evenodd');
       }
       c.top = shape(c, h);
-      ctx.fillStyle = c.total ? rgb(base, active ? 1.08 : 1) : '#1b231a';
+      ctx.fillStyle = c.total ? rgb(base, active ? 1.08 : 1) : C.gap;
       ctx.fill(c.top, 'evenodd');
       ctx.lineWidth = active ? 2.2 : .6;
-      ctx.strokeStyle = active ? '#d1f897' : c.total ? 'rgba(16,21,16,.75)' : '#3b4a37';
+      ctx.strokeStyle = active ? C.active : c.total ? C.edge : C.gapEdge;
       if (!c.total) ctx.setLineDash([3, 3]);
       ctx.stroke(c.top);
       ctx.setLineDash([]);
@@ -124,7 +141,7 @@ const CountyMap = (() => {
       const w = ctx.measureText(c.name).width * 1.15 + 8;
       if (c !== chosen && placed.some(b => Math.abs(b[0] - x) < (b[2] + w) / 2 && Math.abs(b[1] - y) < 15)) continue;
       placed.push([x, y, w]);
-      ctx.lineWidth = 3; ctx.strokeStyle = '#101510'; ctx.fillStyle = c === chosen ? '#d1f897' : '#ebece0';
+      ctx.lineWidth = 3; ctx.strokeStyle = C.halo; ctx.fillStyle = c === chosen ? C.labelActive : C.label;
       ctx.strokeText(c.name.toUpperCase(), x, y - 4); ctx.fillText(c.name.toUpperCase(), x, y - 4);
     }
   }
