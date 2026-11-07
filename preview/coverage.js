@@ -222,7 +222,7 @@
   const liveNote=desk.querySelector('#live-note');
   // Page order is the ranking (U.S. networks, then local, then world).
   const channelChoices=choices.filter(choice=>choice.dataset.channel);
-  const rank=new Map(choices.map((choice,index)=>[choice,index]));
+  const rank=new Map(choices.map((choice,index)=>[choice,choice.dataset.rank?+choice.dataset.rank:1000+index]));
   const playable=choice=>/^[\w-]{11}$/.test(choice?.dataset.video||'');
   const latestLive=()=>channelChoices.find(choice=>choice.dataset.kind==='LIVE'&&playable(choice)) ?? choices.find(playable);
   const BADGES={OFF:'OFF AIR'};
@@ -526,21 +526,24 @@
       channelLink(choice);
       if (choice.dataset.kind!=='LIVE') updateKind(choice,'LIVE',liveList);
     } else {
+      if (choice.dataset.video) choice.dataset.lastVideo=choice.dataset.video;
       choice.dataset.video='';
       choice.disabled=true;
       channelLink(choice);
       if (choice.dataset.kind!=='OFF') updateKind(choice,'OFF',offList);
     }
   }
-  function probe(channel) {
+  // Load one embed in a hidden muted player. `path` is a video ID or 'live_stream?channel=…'.
+  // Resolves {live:true,video}, {live:false} when it's definitely not live here, or null.
+  function probe(path) {
     return new Promise(resolve=>{
       loadPlayerAPI().then(api=>{
         const host=document.createElement('div');
         host.className='live-probe';
         host.setAttribute('aria-hidden','true');
         const frame=document.createElement('iframe');
-        const url=new URL('https://www.youtube-nocookie.com/embed/live_stream');
-        url.search=new URLSearchParams({channel,autoplay:'0',mute:'1',playsinline:'1',controls:'0',enablejsapi:'1',origin:location.origin});
+        const url=new URL('https://www.youtube-nocookie.com/embed/'+path);
+        for (const [key,value] of Object.entries({autoplay:'0',mute:'1',playsinline:'1',controls:'0',enablejsapi:'1',origin:location.origin})) url.searchParams.set(key,value);
         frame.src=url.href;
         frame.allow='autoplay; encrypted-media';
         frame.tabIndex=-1;
@@ -590,6 +593,17 @@
       },()=>resolve(null));
     });
   }
+  // The stream we already know is the fastest check. If that's over, ask for the channel's
+  // current live stream (this also finds a 24/7 stream that restarted under a new ID).
+  // Some channels refuse the live_stream lookup, so the known-ID check comes first.
+  async function checkChannel(choice) {
+    const known=choice.dataset.video||choice.dataset.lastVideo;
+    const first=known?await probe(known):null;
+    if (first?.live) return {...first,video:first.video||known};
+    const second=await probe('live_stream?channel='+encodeURIComponent(choice.dataset.channel));
+    if (second?.live) return second;
+    return first||second;
+  }
   function updateLineupNote() {
     const live=channelChoices.filter(choice=>choice.dataset.kind==='LIVE').length;
     const off=offList?offList.children.length:0;
@@ -603,7 +617,7 @@
   }
   function saveCheck() {
     const channels={};
-    for (const choice of channelChoices) if (choice.dataset.kind==='LIVE'||choice.dataset.kind==='OFF') channels[choice.dataset.channel]={live:choice.dataset.kind==='LIVE',video:choice.dataset.video};
+    for (const choice of channelChoices) if (choice.dataset.kind==='LIVE'||choice.dataset.kind==='OFF') channels[choice.dataset.channel]={live:choice.dataset.kind==='LIVE',video:choice.dataset.video||choice.dataset.lastVideo||''};
     try { localStorage.setItem(CACHE_KEY,JSON.stringify({at:lastCheck,channels})); } catch {}
   }
   function restoreCheck() {
@@ -612,7 +626,9 @@
       if (!saved || Date.now()-saved.at>CHECK_EVERY) return;
       for (const choice of channelChoices) {
         const result=saved.channels[choice.dataset.channel];
-        if (result && (!result.live || /^[\w-]{11}$/.test(result.video))) applyCheck(choice,result,saved.at);
+        if (!result || (result.live && !/^[\w-]{11}$/.test(result.video))) continue;
+        if (!result.live && result.video) choice.dataset.video=result.video;
+        applyCheck(choice,result,saved.at);
       }
       lastCheck=saved.at;
     } catch {}
@@ -626,7 +642,7 @@
     await Promise.all(Array.from({length:lanes},async()=>{
       while (queue.length) {
         const choice=queue.shift();
-        applyCheck(choice,await probe(choice.dataset.channel));
+        applyCheck(choice,await checkChannel(choice));
       }
     }));
     checking=false;
@@ -636,7 +652,7 @@
   }
   async function recheckActive() {
     const choice=active;
-    const result=await probe(choice.dataset.channel);
+    const result=await checkChannel(choice);
     if (choice!==active) return;
     if (result?.live && result.video!==choice.dataset.video) {
       choice.dataset.video=result.video;
